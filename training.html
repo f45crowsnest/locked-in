@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Training | Locked In</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%92%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Instrument+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="shell">
+    <div class="topbar">
+      <a class="back-link" href="index.html">&larr; Locked In</a>
+      <span class="week-badge" id="week-badge">WINTER 2026</span>
+    </div>
+
+    <h1 class="page-title ice">Training</h1>
+    <p class="page-sub">One tip at a time. Read it, use it in your next class.</p>
+
+    <div class="tip-card" id="tip-card">
+      <span class="tip-label">Your tip right now</span>
+      <p class="tip-text" id="tip-text"></p>
+      <span class="tip-cat" id="tip-cat"></span>
+      <div class="tip-actions">
+        <button class="btn btn-ice" id="another-btn" type="button">Give me another</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-foot">
+    <p class="lock-line">SEE YOU ON THE FLOOR 🔒</p>
+  </footer>
+
+  <script src="content.js"></script>
+  <script src="app.js"></script>
+  <script>
+    renderWeekBadge();
+    initTipPage(FITNESS_TIPS, 'lockedin-fitness-deck', false);
+  </script>
+</body>
+</html>
