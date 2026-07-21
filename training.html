@@ -20,6 +20,8 @@
     <h1 class="page-title brand-red">Training</h1>
     <p class="page-sub">One tip at a time. Read it, use it in your next class.</p>
 
+    <noscript><p class="noscript-note">Your browser has JavaScript switched off, so the tips can't load. Turn it on and refresh, or ask a trainer for a hand.</p></noscript>
+
     <div class="tip-card" id="tip-card">
       <span class="tip-label">Your tip right now</span>
       <p class="tip-text" id="tip-text"></p>
@@ -38,7 +40,7 @@
   <script src="app.js"></script>
   <script>
     renderWeekBadge();
-    initTipPage(FITNESS_TIPS, 'lockedin-fitness-deck', false);
+    initTipPage(FITNESS_TIPS, 'lockedin-fitness-deck');
   </script>
 </body>
 </html>

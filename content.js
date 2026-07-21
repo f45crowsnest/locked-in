@@ -354,7 +354,7 @@ var QUIZ = {
     {
       "tag": "home-with-kids",
       "tips": [
-        "Eating the kids' leftovers is not a meal, it is a habit. Plate up your own food when they eat, sit down for two minutes, and actually eat it. You deserve a real meal too.",
+        "Feeding everyone else first is the classic parent move, and your own dinner ends up being the kids' leftovers. Plate up your own food when they eat, sit down for two minutes, and actually eat it. You deserve a real meal too.",
         "Cook once, feed everyone. A big winter batch of bolognese or a slow cooker soup feeds the family and gives you easy lunches, so you are not skipping meals on the chaotic days."
       ]
     },

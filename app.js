@@ -19,16 +19,19 @@ function renderWeekBadge() {
   }
 }
 
-/* ---------- safe storage (private browsing fallback) ---------- */
+/* ---------- safe storage (falls back to in-memory when localStorage is blocked) ---------- */
+
+var memStore = {};
 
 function storeGet(key) {
-  try { return localStorage.getItem(key); } catch (e) { return null; }
+  try { return localStorage.getItem(key); }
+  catch (e) { return Object.prototype.hasOwnProperty.call(memStore, key) ? memStore[key] : null; }
 }
 function storeSet(key, value) {
-  try { localStorage.setItem(key, value); } catch (e) { /* in-memory session only */ }
+  try { localStorage.setItem(key, value); } catch (e) { memStore[key] = value; }
 }
 function storeDel(key) {
-  try { localStorage.removeItem(key); } catch (e) { /* ignore */ }
+  try { localStorage.removeItem(key); } catch (e) { delete memStore[key]; }
 }
 
 /* ---------- tip deck: shuffled order, one tip per visit, no repeats until the deck runs out ---------- */
@@ -58,7 +61,14 @@ function loadDeck(storageKey, poolSize) {
 function drawFromDeck(storageKey, poolSize) {
   var deck = loadDeck(storageKey, poolSize);
   if (deck.next >= deck.order.length) {
-    deck = { order: shuffledIndexes(poolSize), next: 0 };
+    // reshuffle, but never let the new deck open with the tip we just showed
+    var last = deck.order[deck.order.length - 1];
+    var order = shuffledIndexes(poolSize);
+    if (poolSize > 1 && order[0] === last) {
+      var swap = 1 + Math.floor(Math.random() * (poolSize - 1));
+      var tmp = order[0]; order[0] = order[swap]; order[swap] = tmp;
+    }
+    deck = { order: order, next: 0 };
   }
   var index = deck.order[deck.next];
   deck.next += 1;
@@ -70,7 +80,7 @@ function prettyCategory(cat) {
   return String(cat || '').replace(/-/g, ' ');
 }
 
-function initTipPage(pool, storageKey, isHeat) {
+function initTipPage(pool, storageKey) {
   var card = document.getElementById('tip-card');
   var textEl = document.getElementById('tip-text');
   var catEl = document.getElementById('tip-cat');
@@ -99,7 +109,9 @@ function quizAdviceFor(tags) {
   var byTag = {};
   (QUIZ.advice || []).forEach(function (entry) { byTag[entry.tag] = entry.tips || []; });
 
-  var dayIndex = Math.floor(Date.now() / (24 * 60 * 60 * 1000));
+  // day index in the member's own timezone, so tips rotate at their midnight, not 10am
+  var now = new Date();
+  var dayIndex = Math.floor((now.getTime() - now.getTimezoneOffset() * 60000) / (24 * 60 * 60 * 1000));
   var tipVariant = dayIndex % 2;       // rotate which of the 2 tips per tag shows
   var altPick = dayIndex % 3;          // rotate which non-goal answer supplies tip two
 
@@ -121,6 +133,16 @@ function quizAdviceFor(tags) {
   return result;
 }
 
+function validSavedTags(saved) {
+  if (!Array.isArray(saved) || saved.length !== QUIZ.questions.length) return false;
+  for (var i = 0; i < QUIZ.questions.length; i++) {
+    var tag = saved[i];
+    var ok = QUIZ.questions[i].options.some(function (o) { return o.tag === tag; });
+    if (!ok) return false;
+  }
+  return true;
+}
+
 function initQuiz() {
   var area = document.getElementById('quiz-area');
   if (!area || typeof QUIZ === 'undefined' || !QUIZ.questions) return;
@@ -130,9 +152,10 @@ function initQuiz() {
   if (raw) {
     try { saved = JSON.parse(raw); } catch (e) { saved = null; }
   }
-  if (saved && saved.length === QUIZ.questions.length) {
+  if (validSavedTags(saved)) {
     renderQuizResult(area, saved);
   } else {
+    storeDel(QUIZ_STORE_KEY); // stale answers from an older version of the quiz
     renderQuizStep(area, []);
   }
 }

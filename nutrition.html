@@ -20,6 +20,8 @@
     <h1 class="page-title brand-navy">Nutrition</h1>
     <p class="page-sub">Simple food wins, no diets. One tip at a time.</p>
 
+    <noscript><p class="noscript-note">Your browser has JavaScript switched off, so the tips can't load. Turn it on and refresh, or ask a trainer for a hand.</p></noscript>
+
     <div class="tip-card navy-card" id="tip-card">
       <span class="tip-label">Your tip right now</span>
       <p class="tip-text" id="tip-text"></p>
@@ -45,7 +47,7 @@
   <script src="app.js"></script>
   <script>
     renderWeekBadge();
-    initTipPage(NUTRITION_TIPS, 'lockedin-nutrition-deck', true);
+    initTipPage(NUTRITION_TIPS, 'lockedin-nutrition-deck');
     initQuiz();
   </script>
 </body>

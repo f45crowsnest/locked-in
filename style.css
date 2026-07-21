@@ -56,8 +56,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
+  flex-wrap: wrap; /* badge drops to its own line on small phones instead of overflowing */
+  gap: 0.6rem 0.75rem;
   margin-bottom: 1.9rem;
+}
+
+@media (max-width: 380px) {
+  .kicker { letter-spacing: 0.12em; font-size: 0.78rem; }
+  .week-badge { font-size: 0.9rem; }
 }
 
 .kicker {
@@ -93,11 +99,15 @@ body {
 }
 
 .back-link {
+  display: inline-block;
   color: var(--muted);
   text-decoration: none;
-  font-size: 0.98rem;
+  font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.02em;
+  /* padding grows the tap target to 44px+ without moving the layout */
+  padding: 0.6rem 0.7rem;
+  margin: -0.6rem -0.7rem;
 }
 .back-link:hover { color: var(--red); }
 
@@ -176,12 +186,22 @@ body {
   text-transform: uppercase;
   line-height: 1.05;
   margin: 0.3rem 0 0.5rem;
+  padding-right: 2.4rem; /* keep clear of the corner arrow */
 }
 
 .tile-training h2 { color: var(--red); }
 .tile-nutrition h2 { color: var(--navy); }
 
-.tile p { color: var(--muted); font-size: 1.02rem; max-width: 26rem; }
+.tile p { color: var(--muted); font-size: 1.02rem; max-width: 26rem; padding-right: 1.5rem; }
+
+.noscript-note {
+  background: var(--card);
+  border: 2px solid var(--red);
+  border-radius: 14px;
+  padding: 1rem 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+}
 
 .tile .go {
   position: absolute;
